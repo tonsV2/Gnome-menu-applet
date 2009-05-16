@@ -7,37 +7,31 @@ pygtk.require('2.0')
 import gnomeapplet
 import gtk
 
-from xml.dom import minidom#, Node
+from xml.dom import minidom
 
-
-def create_menus(node):
-	menus = []
-	#root element is always of type menus
-	for cn in node.childNodes:
-		menus.append(create_menu(cn))
-	return menus
 
 def create_menu(node):
-	menu = gtk.Menu()
+	menus = []
 	for child in node.childNodes:
 		if child.localName == "item":
-			menu.append(gtk.MenuItem(child.getAttribute("name")))
+			menus.append(gtk.MenuItem(child.getAttribute("name")))
 		if child.localName == "seperator":
-			menu.append(gtk.SeparatorMenuItem())
+			menus.append(gtk.SeparatorMenuItem())
 		if child.localName == "menu": #if child.childNodes:
-			submenu = gtk.MenuItem(child.getAttribute("name"))
-			submenu.set_submenu(create_menu(child))
-			menu.append(submenu)
-	return menu
+			menuitem = gtk.MenuItem(child.getAttribute("name"))
+			menu = gtk.Menu()
+			for mi in create_menu(child):	# for each menuitem
+				menu.append(mi)		# append each menuitem to menu
+			menuitem.set_submenu(menu)	# set menu as submenu of menuitem
+			menus.append(menuitem)
+	return menus
 
 def factory(applet, iid):
 	doc = minidom.parse("menu.xml")
 	rootNode = doc.documentElement
-
-	menus = create_menus(rootNode)
 	menu_bar = gtk.MenuBar()
-	for menu in menus:
-		menu_bar.append(menu)
+	for menu in create_menu(rootNode):	# for each menu in list
+		menu_bar.append(menu)	# append each menu
 
 	applet.add(menu_bar)
 	applet.show_all()
