@@ -1,6 +1,6 @@
 
 <menus>
-	<menu name="Applications" icon="" comment="Browse and run installed applications">
+	<menu name="Applications" icon="/usr/share/icons/gnome/scalable/places/gnome-main-menu.svg" comment="Browse and run installed applications">
 		<menu name="Games" icon="">
 			<!--item ref="extremetuxracer.desktop" /-->
 			<!--item ref="flightgear.desktop" /-->
@@ -11,7 +11,7 @@
 		<!--item ref="gnome-dictionary.desktop" /-->
 		<item name="Dictionary"
 			comment="Check word definitions..."
-			icon="accessories-dictionary.png"
+			icon="/usr/share/icons/gnome/32x32/apps/accessories-dictionary.png"
 			command="gnome-dictionary"
 			terminal="false"
 			 />

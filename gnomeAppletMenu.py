@@ -14,13 +14,19 @@ def on_click(mi):
 
 def create_menuitem(node):
 	menuitem = gtk.ImageMenuItem(node.getAttribute("name"))
-	menuitem.set_tooltip_text(node.getAttribute("comment"))
-#	image = gtk.Image()
-#	image.set_image(node.getAttribute("icon"))
-#	menuitem.set_image(gtk.STOCK_QUIT)
 
-	menuitem.__command = node.getAttribute("command")
-	menuitem.connect("activate", on_click)
+	menuitem.set_tooltip_text(node.getAttribute("comment"))
+
+	icon = node.getAttribute("icon")
+	if icon:
+		image = gtk.Image()
+		image.set_from_file(icon)
+		menuitem.set_image(image)
+
+	command = node.getAttribute("command")
+	if command:
+		menuitem.__command = command
+		menuitem.connect("activate", on_click)
 
 	return menuitem
 
@@ -32,8 +38,7 @@ def create_menu(node):
 		if child.localName == "seperator":
 			menus.append(gtk.SeparatorMenuItem())
 		if child.localName == "menu": #if child.childNodes:
-#			menuitem = create_menuitem(child)
-			menuitem = gtk.ImageMenuItem(child.getAttribute("name"))
+			menuitem = create_menuitem(child)
 			menu = gtk.Menu()
 			for mi in create_menu(child):	# for each menuitem
 				menu.append(mi)		# append each menuitem to menu
