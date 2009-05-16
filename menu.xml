@@ -1,5 +1,4 @@
 
-<!-- Use menu insted of menus...? -->
 <menus>
 	<menu name="Applications" icon="" comment="Browse and run installed applications">
 		<menu name="Games" icon="" comment="">
