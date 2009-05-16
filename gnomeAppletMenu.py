@@ -7,13 +7,15 @@ pygtk.require('2.0')
 import gnomeapplet
 import gtk
 
+import os
+
 from xml.dom import minidom
 
 import xdg.IconTheme
 
 
 def on_click(mi):
-	print mi.__command
+	os.system(mi.__command)
 
 def create_menuitem(node):
 	menuitem = gtk.ImageMenuItem(node.getAttribute("name"))
