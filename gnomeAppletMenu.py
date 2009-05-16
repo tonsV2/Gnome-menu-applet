@@ -9,6 +9,9 @@ import gtk
 
 from xml.dom import minidom
 
+import xdg.IconTheme
+
+
 def on_click(mi):
 	print mi.__command
 
@@ -19,7 +22,8 @@ def create_menuitem(node):
 	if tooltip:
 		menuitem.set_tooltip_text(tooltip)
 
-	icon = node.getAttribute("icon")
+	icon_name = node.getAttribute("icon")
+	icon = xdg.IconTheme.getIconPath(icon_name, None, "gnome", ["png"])
 	if icon:
 		image = gtk.Image()
 		image.set_from_file(icon)
