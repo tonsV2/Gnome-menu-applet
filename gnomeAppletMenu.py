@@ -28,7 +28,10 @@ def on_click(mi):
 def create_menuitem_by_ref(ref):
 #load entry
 	de_path = "/usr/share/app-install/desktop/"
-	de = d.DesktopEntry(de_path + ref)
+	de = d.DesktopEntry(de_path + ref + ".desktop")
+	return snot(de)
+
+def snot(de):
 #name
 	menuitem = gtk.ImageMenuItem(de.getName())
 #tooltip
@@ -40,10 +43,8 @@ def create_menuitem_by_ref(ref):
 		image.set_from_file(icon)
 		menuitem.set_image(image)
 #command
-	command = de.getExec()
-	if command:
-		menuitem.__command = command
-		menuitem.connect("activate", on_click)
+	menuitem.__command = de.getExec()
+	menuitem.connect("activate", on_click)
 
 	return menuitem
 
@@ -74,6 +75,18 @@ def create_menuitem(node):
 
 	return menuitem
 
+def create_menu_directory(node):
+	ref = node.getAttribute("ref")
+	if ref:
+		return create_menu_directory_by_ref(ref)
+	return create_menuitem(node)
+
+def create_menu_directory_by_ref(ref):
+#load entry
+	de_path = "/usr/share/desktop-directories/"
+	de = d.DesktopEntry(de_path + ref + ".directory")
+	return snot(de)
+
 def create_menu(node):
 	menus = []
 	for child in node.childNodes:
@@ -82,7 +95,7 @@ def create_menu(node):
 		if child.localName == "seperator":
 			menus.append(gtk.SeparatorMenuItem())
 		if child.localName == "menu": #if child.childNodes:
-			menuitem = create_menuitem(child)
+			menuitem = create_menu_directory(child)
 			menu = gtk.Menu()
 			for mi in create_menu(child):	# for each menuitem
 				menu.append(mi)		# append each menuitem to menu
@@ -91,7 +104,7 @@ def create_menu(node):
 	return menus
 
 def factory(applet, iid):
-	doc = minidom.parse("menu.xml")		# parse xml file
+	doc = minidom.parse("full_gnome.xml")		# parse xml file
 	rootNode = doc.documentElement		# get root element
 	menu_bar = gtk.MenuBar()
 	for menu in create_menu(rootNode):	# for each menu in list
