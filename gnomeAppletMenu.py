@@ -10,15 +10,20 @@ import gtk
 from xml.dom import minidom
 
 
+def create_menuitem(node):
+	menuitem = gtk.MenuItem(node.getAttribute("name"))
+	menuitem.set_tooltip_text(node.getAttribute("comment"))
+	return menuitem
+
 def create_menu(node):
 	menus = []
 	for child in node.childNodes:
 		if child.localName == "item":
-			menus.append(gtk.MenuItem(child.getAttribute("name")))
+			menus.append(create_menuitem(child))
 		if child.localName == "seperator":
 			menus.append(gtk.SeparatorMenuItem())
 		if child.localName == "menu": #if child.childNodes:
-			menuitem = gtk.MenuItem(child.getAttribute("name"))
+			menuitem = create_menuitem(child)
 			menu = gtk.Menu()
 			for mi in create_menu(child):	# for each menuitem
 				menu.append(mi)		# append each menuitem to menu
@@ -27,8 +32,8 @@ def create_menu(node):
 	return menus
 
 def factory(applet, iid):
-	doc = minidom.parse("menu.xml")
-	rootNode = doc.documentElement
+	doc = minidom.parse("menu.xml")		# parse xml file
+	rootNode = doc.documentElement		# get root element
 	menu_bar = gtk.MenuBar()
 	for menu in create_menu(rootNode):	# for each menu in list
 		menu_bar.append(menu)		# append each menu
