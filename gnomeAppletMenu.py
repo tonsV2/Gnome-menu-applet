@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#! /usr/bin/env python
 
 """
 todo:
@@ -7,7 +7,7 @@ todo:
 	support for .desktop files
 	gui for editing menus
 	create xsd and validate the datafile
-
+	perhaps support for an include element in the datafile
 """
 
 
@@ -18,12 +18,40 @@ pygtk.require('2.0')
 import sys, os
 from xml.dom import minidom
 import xdg.IconTheme
+import xdg.DesktopEntry as d
+
 
 
 def on_click(mi):
-	os.system(mi.__command)
+	os.system(mi.__command + " &")
+
+def create_menuitem_by_ref(ref):
+#load entry
+	de_path = "/usr/share/app-install/desktop/"
+	de = d.DesktopEntry(de_path + ref)
+#name
+	menuitem = gtk.ImageMenuItem(de.getName())
+#tooltip
+	menuitem.set_tooltip_text(de.getComment())
+#icon
+	icon = xdg.IconTheme.getIconPath(de.getIcon(), 22, "gnome", ["png"])
+	if icon:
+		image = gtk.Image()
+		image.set_from_file(icon)
+		menuitem.set_image(image)
+#command
+	command = de.getExec()
+	if command:
+		menuitem.__command = command
+		menuitem.connect("activate", on_click)
+
+	return menuitem
 
 def create_menuitem(node):
+	ref = node.getAttribute("ref")
+	if ref:
+		return create_menuitem_by_ref(ref)
+
 	menuitem = gtk.ImageMenuItem(node.getAttribute("name"))
 
 	tooltip = node.getAttribute("tooltip")

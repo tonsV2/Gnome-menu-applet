@@ -2,13 +2,13 @@
 <menus>
 	<menu name="Applications" icon="gnome-main-menu" tooltip="Browse and run installed applications">
 		<menu name="Games" icon="">
-			<!--item ref="extremetuxracer.desktop" /-->
-			<!--item ref="flightgear.desktop" /-->
+			<item ref="extremetuxracer.desktop" />
+			<item ref="flightgear.desktop" />
 			<item name="Tux" />
 			<item name="racer" />
 		</menu>
 		<seperator />
-		<!--item ref="gnome-dictionary.desktop" /-->
+		<item ref="gnome-dictionary.desktop" />
 		<item name="Dictionary"
 			tooltip="Check word definitions..."
 			icon="accessories-dictionary.png"
