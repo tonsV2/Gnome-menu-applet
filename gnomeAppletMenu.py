@@ -1,16 +1,22 @@
 #!/usr/bin/env python
 
-import pygtk
-import sys
-pygtk.require('2.0')
+"""
+todo:
+	implement about dialog
+	implment change of datafile
+	support for .desktop files
+	gui for editing menus
+	create xsd and validate the datafile
+
+"""
+
 
 import gnomeapplet
 import gtk
-
-import os
-
+import pygtk
+pygtk.require('2.0')
+import sys, os
 from xml.dom import minidom
-
 import xdg.IconTheme
 
 
@@ -25,7 +31,9 @@ def create_menuitem(node):
 		menuitem.set_tooltip_text(tooltip)
 
 	icon_name = node.getAttribute("icon")
-	icon = xdg.IconTheme.getIconPath(icon_name, None, "gnome", ["png"])
+	# size, theme and filetype shouldnt be hard coded but xdg.Config.icon_size didnt return a size suitable for a menu
+	# and xdg.Config.icon_theme returned highcolor which caused getIconData() not to return a path
+	icon = xdg.IconTheme.getIconPath(icon_name, 22, "gnome", ["png"])
 	if icon:
 		image = gtk.Image()
 		image.set_from_file(icon)
