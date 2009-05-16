@@ -11,7 +11,6 @@ from xml.dom import minidom#, Node
 
 
 def create_menus(node):
-	print node.localName
 	menus = []
 	#root element is always of type menus
 	for cn in node.childNodes:
