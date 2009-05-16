@@ -15,7 +15,9 @@ def on_click(mi):
 def create_menuitem(node):
 	menuitem = gtk.ImageMenuItem(node.getAttribute("name"))
 
-	menuitem.set_tooltip_text(node.getAttribute("comment"))
+	tooltip = node.getAttribute("tooltip")
+	if tooltip:
+		menuitem.set_tooltip_text(tooltip)
 
 	icon = node.getAttribute("icon")
 	if icon:
