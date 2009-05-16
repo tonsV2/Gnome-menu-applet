@@ -1,0 +1,21 @@
+
+<!-- Use menu insted of menus...? -->
+<menus>
+	<menu name="Applications" icon="" comment="Browse and run installed applications">
+		<menu name="Games" icon="" comment="">
+			<item ref="extremetuxracer.desktop" />
+			<item ref="flightgear.desktop" />
+		</menu>
+		<seperator />
+		<item ref="gnome-dictionary.desktop" />
+		<item name="Dictionary"
+			comment="Check word definitions..."
+			icon="accessories-dictionary.png"
+			command="gnome-dictionary"
+			terminal="false"
+			 />
+	</menu>
+	<menu name="Places" comment="Access doc...">
+	</menu>
+</menus>
+
