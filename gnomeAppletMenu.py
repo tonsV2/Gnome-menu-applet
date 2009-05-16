@@ -10,26 +10,35 @@ import gtk
 from xml.dom import minidom#, Node
 
 
+def create_menus(node):
+	print node.localName
+	menus = []
+	#root element is always of type menus
+	for cn in node.childNodes:
+		menus.append(create_menu(cn))
+	return menus
+
 def create_menu(node):
+	menu = gtk.Menu()
 	for child in node.childNodes:
-		menu = gtk.Menu()
 		if child.localName == "item":
 			menu.append(gtk.MenuItem(child.getAttribute("name")))
 		if child.localName == "seperator":
 			menu.append(gtk.SeparatorMenuItem())
-		if child.localName == "menu": # && child.childNodes: #isnt the && redundant since a menu always have childnodes?
-			parent = gtk.MenuItem(child.getAttribute("name"))
-			parent.set_submenu(create_menu(child))
+		if child.localName == "menu": #if child.childNodes:
+			submenu = gtk.MenuItem(child.getAttribute("name"))
+			submenu.set_submenu(create_menu(child))
+			menu.append(submenu)
 	return menu
 
-
 def factory(applet, iid):
-	menu_bar = gtk.MenuBar()
 	doc = minidom.parse("menu.xml")
 	rootNode = doc.documentElement
 
-	menu = create_menu(rootNode)
-	menu_bar.append(menu)
+	menus = create_menus(rootNode)
+	menu_bar = gtk.MenuBar()
+	for menu in menus:
+		menu_bar.append(menu)
 
 	applet.add(menu_bar)
 	applet.show_all()
