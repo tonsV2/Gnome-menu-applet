@@ -31,7 +31,7 @@ def factory(applet, iid):
 	rootNode = doc.documentElement
 	menu_bar = gtk.MenuBar()
 	for menu in create_menu(rootNode):	# for each menu in list
-		menu_bar.append(menu)	# append each menu
+		menu_bar.append(menu)		# append each menu
 
 	applet.add(menu_bar)
 	applet.show_all()
@@ -53,36 +53,4 @@ if len(sys.argv) == 2:
 if __name__ == '__main__':
 	print "Starting factory"
 	gnomeapplet.bonobo_factory("OAFIID:Gnome_Panel_Menu_Factory", gnomeapplet.Applet.__gtype__, "gnome applet menu", "0.1", factory)
-
-
-def create_menu_old():
-	menu = gtk.Menu()
-
-	menu.append(gtk.MenuItem("Open"))
-	menu.append(gtk.MenuItem("Save"))
-	menu.append(gtk.SeparatorMenuItem())
-	menu.append(gtk.MenuItem("_Exit"))
-
-	menuItemFile = gtk.MenuItem("Applications")
-	menuItemFile.set_submenu(menu)
-
-	menu2 = gtk.Menu()
-	menu2.append(gtk.ImageMenuItem("Open"))
-	menu2.append(gtk.MenuItem("Save"))
-	menu2.append(gtk.SeparatorMenuItem())
-	menu2.append(gtk.MenuItem("Exit"))
-
-	menuItemFile2 = gtk.MenuItem("Places")
-	menuItemFile2.set_submenu(menu2)
-
-	menu_bar = gtk.MenuBar()
-#	menu_bar.append(menuItemFile)
-#	menu_bar.append(menuItemFile2)
-
-
-	doc = minidom.parse("menu.xml")
-	rootNode = doc.documentElement
-	menu_bar.append(rec_xml(rootNode))
-
-	return menu_bar
 
