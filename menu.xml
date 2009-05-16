@@ -1,7 +1,7 @@
 
 <menus>
 	<menu name="Applications" icon="" comment="Browse and run installed applications">
-		<menu name="Games" icon="" comment="">
+		<menu name="Games" icon="">
 			<!--item ref="extremetuxracer.desktop" /-->
 			<!--item ref="flightgear.desktop" /-->
 			<item name="Tux" />
