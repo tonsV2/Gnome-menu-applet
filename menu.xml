@@ -17,8 +17,8 @@
 			 />
 	</menu>
 	<menu name="Places" comment="Access doc...">
-		<item name="c:" />
-		<item name="Home" />
+		<item name="Desktop" command="gnome-open ~/Desktop" />
+		<item name="Home" command="gnome-open ~" />
 	</menu>
 </menus>
 

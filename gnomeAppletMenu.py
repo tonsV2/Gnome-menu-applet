@@ -9,10 +9,19 @@ import gtk
 
 from xml.dom import minidom
 
+def on_click(mi):
+	print mi.__command
 
 def create_menuitem(node):
-	menuitem = gtk.MenuItem(node.getAttribute("name"))
+	menuitem = gtk.ImageMenuItem(node.getAttribute("name"))
 	menuitem.set_tooltip_text(node.getAttribute("comment"))
+#	image = gtk.Image()
+#	image.set_image(node.getAttribute("icon"))
+#	menuitem.set_image(gtk.STOCK_QUIT)
+
+	menuitem.__command = node.getAttribute("command")
+	menuitem.connect("activate", on_click)
+
 	return menuitem
 
 def create_menu(node):
@@ -23,7 +32,8 @@ def create_menu(node):
 		if child.localName == "seperator":
 			menus.append(gtk.SeparatorMenuItem())
 		if child.localName == "menu": #if child.childNodes:
-			menuitem = create_menuitem(child)
+#			menuitem = create_menuitem(child)
+			menuitem = gtk.ImageMenuItem(child.getAttribute("name"))
 			menu = gtk.Menu()
 			for mi in create_menu(child):	# for each menuitem
 				menu.append(mi)		# append each menuitem to menu
