@@ -35,6 +35,10 @@ import xdg.IconTheme
 import xdg.DesktopEntry as d
 
 
+#global variable for handling the data source
+data_source = "/home/snot/python/menu/full_gnome.xml"
+
+
 
 def on_click(mi):
 	command = mi.__command + " &"
@@ -127,10 +131,8 @@ def create_menu(node):
 			menus.append(menuitem)
 	return menus
 
-
 def factory(applet, iid):
-	datafile = "/home/snot/python/menu/full_gnome.xml"
-	doc = minidom.parse(datafile)		# parse xml file
+	doc = minidom.parse(data_source)	# parse xml file
 	rootNode = doc.documentElement		# get root element
 	menu_bar = gtk.MenuBar()
 	menu_bar.connect("button_press_event", showMenu, applet)
@@ -151,16 +153,30 @@ def create_rightclick_menu(applet):
 	propxml="""
 			<popup name="button3">
 				<menuitem name="Item 3" verb="About" label="_About" pixtype="stock" pixname="gtk-about"/>
-				<!--menuitem name="Item snot" verb="Kill" label="Kill" pixtype="stock" pixname="gtk-about" /-->
+				<menuitem name="" verb="datafile" label="Change data source" pixtype="stock" pixname="gtk-properties" />
 			</popup>"""
-	verbs = [("About", showAboutDialog), ("Kill", kill)]
+	verbs = [("About", showAboutDialog),
+			("datafile", change_data_source)]
 	applet.setup_menu(propxml, verbs, None)
 
-def kill(*arguments, **keywords):
-	sys.exit()
+def change_data_source(*arguments, **keywords):
+	global data_source
+	dialog = gtk.FileChooserDialog(title=None, action=gtk.FILE_CHOOSER_ACTION_OPEN, buttons=(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL ,gtk.STOCK_OPEN ,gtk.RESPONSE_OK))
+	response = dialog.run()
+	if response == gtk.RESPONSE_OK:
+		data_source = dialog.get_filename()
+#	elif response == gtk.RESPONSE_CANCEL:
+#		print 'Closed, no files selected'
+	dialog.destroy()
+
 
 def showAboutDialog(*arguments, **keywords):
-	print "About... dialog"
+	about = gtk.AboutDialog()
+	about.set_program_name("GMenu applet")
+	about.set_version("0.1")
+	about.set_copyright("(c) sebastiantthegreatful@gmail.com")
+	about.run()
+	about.destroy()
 
 
 if len(sys.argv) == 2 and sys.argv[1] == "run-in-window":
