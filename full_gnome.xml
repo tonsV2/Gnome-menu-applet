@@ -1,0 +1,66 @@
+<!--
+All menus must be wrapped in a menus element. (not really any root element would... as long as there is one)
+
+Menus are constructed using the menu element.
+Valid attributes are:
+	ref		- Argument is a refernce to a .directory file
+	name		- Name of the menu
+	icon		- Path to icon. Can be absolute or simple the icon name which will be looked up using xdg.IconTheme.getIconPath
+	comment		- The comment is used as tooltip
+	command		- The command which will be executed when the menu is clicked
+	terminal	- bool value which indicates if the command of the ele
+
+Menu entries are constructed using the item element.
+Valid attributes are:
+	Same as above... beside the ref attribute takes a reference to a directory file insted.
+	should there really be two different elements?
+
+-->
+
+<menus>
+	<menu name="Applications" icon="gnome-main-menu" tooltip="Browse and run installed applications">
+		<menu name="Accessories" icon="applications-accessories">
+			<item ref="file-roller" />
+			<item ref="gnome-dictionary" />
+			<item ref="gnome-do" />
+			<item ref="gvim" />
+			<item ref="gksu" />
+			<item ref="gnome-screenshot" />
+			<item ref="gnome-terminal" />
+			<item ref="gedit" />
+		</menu>
+		<menu name="Graphics" icon="applications-graphics">
+			<item ref="ooo-draw" />
+			<item ref="xpdf" />
+		</menu>
+		<menu name="Internet" icon="applications-internet">
+			<item ref="epiphany" />
+			<item ref="iceweasel" />
+			<item ref="pidgin" />
+		</menu>
+		<!--menu name="Office" icon="applications-office"-->
+		<menu ref="Office">
+			<item ref="ooo-startcenter" />
+			<item ref="ooo-base" />
+			<item ref="ooo-calc" />
+			<item ref="ooo-draw" />
+			<item ref="ooo-impress" />
+			<item ref="ooo-math" />
+			<item ref="ooo-writer" />
+		</menu>
+	</menu>
+	<menu name="Places" icon="" tooltip="Access doc...">
+		<item name="Desktop" icon="user-desktop" command="gnome-open ~/Desktop" />
+		<item name="Home" icon="user-home" command="gnome-open ~" />
+		<seperator />
+		<item ref="nautilus-computer" />
+		<item ref="nautilus-cd-burner" />
+		<item name="Removable...." />
+		<seperator />
+		<item ref="network-scheme" />
+		<seperator />
+		<item ref="gnome-search-tool" />
+	</menu>
+	<menu name="System" />
+</menus>
+
