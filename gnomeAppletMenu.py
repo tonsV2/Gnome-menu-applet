@@ -38,7 +38,10 @@ import xdg.DesktopEntry as d
 #global variable for handling the data source
 data_source = "/home/snot/python/menu/full_gnome.xml"
 
-
+# size, theme and filetype shouldnt be hard coded but xdg.Config.icon_size didnt return a size suitable for a menu
+# and xdg.Config.icon_theme returned highcolor which caused getIconData() not to return a path
+def getIconPath(icon):
+	return  xdg.IconTheme.getIconPath(icon, 22, "gnome", ["png", "svg", "jpg"])
 
 def on_click(mi):
 	command = mi.__command + " &"
@@ -50,15 +53,21 @@ def create_menuitem_by_ref(ref):
 #load entry
 	de_path = "/usr/share/app-install/desktop/"
 	de = d.DesktopEntry(de_path + ref + ".desktop")
-	return snot(de)
+	return menuitem(de)
 
-def snot(de):
+def create_menu_directory_by_ref(ref):
+#load entry
+	de_path = "/usr/share/desktop-directories/"
+	de = d.DesktopEntry(de_path + ref + ".directory")
+	return menuitem(de)
+
+def menuitem(de):
 #name
 	menuitem = gtk.ImageMenuItem(de.getName())
 #tooltip
 	menuitem.set_tooltip_text(de.getComment())
 #icon
-	icon = xdg.IconTheme.getIconPath(de.getIcon(), 22, "gnome", ["png", "svg", "jpg"])
+	icon = getIconPath(de.getIcon())
 	if icon:
 		image = gtk.Image()
 		image.set_from_file(icon)
@@ -82,9 +91,7 @@ def create_menuitem(node):
 		menuitem.set_tooltip_text(tooltip)
 
 	icon_name = node.getAttribute("icon")
-	# size, theme and filetype shouldnt be hard coded but xdg.Config.icon_size didnt return a size suitable for a menu
-	# and xdg.Config.icon_theme returned highcolor which caused getIconData() not to return a path
-	icon = xdg.IconTheme.getIconPath(icon_name, 22, "gnome", ["png", "svg", "jpg"])
+	icon = getIconPath(icon_name)
 	if icon:
 		image = gtk.Image()
 		image.set_from_file(icon)
@@ -108,12 +115,6 @@ def create_menu_directory(node):
 	if ref:
 		return create_menu_directory_by_ref(ref)
 	return create_menuitem(node)
-
-def create_menu_directory_by_ref(ref):
-#load entry
-	de_path = "/usr/share/desktop-directories/"
-	de = d.DesktopEntry(de_path + ref + ".directory")
-	return snot(de)
 
 def create_menu(node):
 	menus = []
@@ -153,14 +154,14 @@ def create_rightclick_menu(applet):
 	propxml="""
 			<popup name="button3">
 				<menuitem name="Item 3" verb="About" label="_About" pixtype="stock" pixname="gtk-about"/>
-				<menuitem name="" verb="datafile" label="Change data source" pixtype="stock" pixname="gtk-properties" />
+				<menuitem name="" verb="ChangeDataSoruce" label="Change data source" pixtype="stock" pixname="gtk-properties" />
 			</popup>"""
 	verbs = [("About", showAboutDialog),
-			("datafile", change_data_source)]
+			("ChangeDataSoruce", ShowChangeDataSourceDialog)]
 	applet.setup_menu(propxml, verbs, None)
 
-def change_data_source(*arguments, **keywords):
-	global data_source
+def ShowChangeDataSourceDialog(*arguments, **keywords):
+#	global data_source
 	dialog = gtk.FileChooserDialog(title=None, action=gtk.FILE_CHOOSER_ACTION_OPEN, buttons=(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL ,gtk.STOCK_OPEN ,gtk.RESPONSE_OK))
 	response = dialog.run()
 	if response == gtk.RESPONSE_OK:
@@ -179,18 +180,17 @@ def showAboutDialog(*arguments, **keywords):
 	about.destroy()
 
 
-if len(sys.argv) == 2 and sys.argv[1] == "run-in-window":
-	mainWindow = gtk.Window(gtk.WINDOW_TOPLEVEL)
-	mainWindow.set_title("Gnome Applet Menu")
-	mainWindow.connect("destroy", gtk.main_quit)
-	applet = gnomeapplet.Applet()
-	factory(applet, None)
-	applet.reparent(mainWindow)
-	mainWindow.show_all()
-	gtk.main()
-	sys.exit()
-
 if __name__ == '__main__':
-	print "Starting factory"
-	gnomeapplet.bonobo_factory("OAFIID:Gnome_Panel_Menu_Factory", gnomeapplet.Applet.__gtype__, "gnome applet menu", "1.0", factory)
+	if len(sys.argv) == 2 and sys.argv[1] == "run-in-window":
+		mainWindow = gtk.Window(gtk.WINDOW_TOPLEVEL)
+		mainWindow.set_title("Gnome Applet Menu")
+		mainWindow.connect("destroy", gtk.main_quit)
+		applet = gnomeapplet.Applet()
+		factory(applet, None)
+		applet.reparent(mainWindow)
+		mainWindow.show_all()
+		gtk.main()
+		sys.exit()
+	else:
+		gnomeapplet.bonobo_factory("OAFIID:Gnome_Panel_Menu_Factory", gnomeapplet.Applet.__gtype__, "gnome applet menu", "1.0", factory)
 
