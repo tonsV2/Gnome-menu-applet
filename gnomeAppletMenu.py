@@ -9,7 +9,6 @@ License:
 	Free for none commercial use...
 
 todo:
-	implement about dialog
 	implment change of datafile
 	gui for editing menus
 	create xsd and validate the datafile
@@ -41,7 +40,8 @@ data_source = "/home/snot/python/menu/full_gnome.xml"
 # size, theme and filetype shouldnt be hard coded but xdg.Config.icon_size didnt return a size suitable for a menu
 # and xdg.Config.icon_theme returned highcolor which caused getIconData() not to return a path
 def getIconPath(icon):
-	return  xdg.IconTheme.getIconPath(icon, 22, "gnome", ["png", "svg", "jpg"])
+	path = xdg.IconTheme.getIconPath(icon, 22, "gnome", ["png", "svg", "jpg"])
+	return path
 
 def on_click(mi):
 	command = mi.__command + " &"

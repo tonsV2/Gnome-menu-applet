@@ -62,5 +62,7 @@ Valid attributes are:
 		<item ref="gnome-search-tool" />
 	</menu>
 	<menu name="System" />
+	<seperator />
+	<item ref="gnome-search-tool" />
 </menus>
 
