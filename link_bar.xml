@@ -1,10 +1,8 @@
 
 <menus>
-	<menu icon="gnome-main-menu" command="gnome-open facebook.dk" tooltip="Social web site..." />
-	<menu icon="accessories-dictionary.png" command="gnome-open http://eb.dk" tooltip="eb.dk" />
-	<menu icon="" command="" tooltip="" />
-	<menu icon="" command="" tooltip="" />
-	<menu icon="" command="" tooltip="" />
-	<menu icon="" command="" tooltip="" />
+	<item icon="gnome-main-menu" command="gnome-open facebook.dk" tooltip="Social web site..." />
+	<item name="eb.dk" icon="accessories-dictionary.png" command="gnome-open http://eb.dk" tooltip="eb.dk" />
+	<item icon="weather-few-clouds" command="firefox http://dmi.dk" tooltip="Dmi..." />
+	<item icon="mail-unread" command="firefox http://gmail.com/" tooltip="Mail... gmail..." />
 </menus>
 
