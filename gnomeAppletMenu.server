@@ -1,23 +1,25 @@
 <oaf_info>
-	<oaf_server iid="OAFIID:Gnome_Panel_Menu_Factory"" type="exe" location="/home/snot/python/menu/gnomeAppletMenu.py">
+
+	<oaf_server iid="OAFIID:Gnome_Panel_Menu_Factory" type="exe" location="/home/snot/python/menu/gnomeAppletMenu.py">
 		<oaf_attribute name="repo_ids" type="stringv">
 			<item value="IDL:Bonobo/GenericFactory:1.0"/>
 			<item value="IDL:Bonobo/Unknown:1.0"/>
 		</oaf_attribute>
 		<oaf_attribute name="name" type="string" value="Gnome Applet Menu"/>
-		<oaf_attribute name="description" type="string" value="gnome applet menu"/>
+		<oaf_attribute name="description" type="string" value="Simple gnome menu"/>
 	</oaf_server>
 
-	<oaf_server iid="OAFIID:Gnome_Panel_Menu" type="factory" location="OAFIID:Gnome_Panel_Menu_Factory">
+	<oaf_server iid="OAFIID:Gnome_Panel_Menu12345" type="factory" location="OAFIID:Gnome_Panel_Menu_Factory">
 		<oaf_attribute name="repo_ids" type="stringv">
 			<item value="IDL:GNOME/Vertigo/PanelAppletShell:1.0"/>
 			<item value="IDL:Bonobo/Control:1.0"/>
 			<item value="IDL:Bonobo/Unknown:1.0"/>
 		</oaf_attribute>
-		<oaf_attribute name="name" type="string" value="Menu"/>
-		<oaf_attribute name="description" type="string" value="gnome applet menu"/>
+		<oaf_attribute name="name" type="string" value="Example"/>
+		<oaf_attribute name="description" type="string" value="Simple gnome menu applet"/>
 		<oaf_attribute name="panel:category" type="string" value="Utility"/>
 		<oaf_attribute name="panel:icon" type="string" value="computer.png"/>
 	</oaf_server>
+
 </oaf_info>
 
