@@ -12,7 +12,7 @@ Valid attributes are:
 
 Menu entries are constructed using the item element.
 Valid attributes are:
-	Same as above... beside the ref attribute takes a reference to a directory file insted.
+	Same as above... beside the ref attribute takes a reference to a *.directory file insted of a *.desktop.
 	should there really be two different elements?
 
 -->
