@@ -61,60 +61,79 @@ def create_menu_directory_by_ref(ref):
 	de = d.DesktopEntry(de_path + ref + ".directory")
 	return menuitem(de)
 
-def menuitem(de):
-#name
-	menuitem = gtk.ImageMenuItem(de.getName())
-#tooltip
-	menuitem.set_tooltip_text(de.getComment())
-#icon
-	icon = getIconPath(de.getIcon())
-	if icon:
-		image = gtk.Image()
-		image.set_from_file(icon)
-		menuitem.set_image(image)
-#command
-	menuitem.__command = de.getExec()
-	menuitem.__terminal = de.getTerminal()
-	menuitem.connect("activate", on_click)
-
-	return menuitem
-
-def create_menuitem(node):
-	ref = node.getAttribute("ref")
-	if ref:
-		return create_menuitem_by_ref(ref)
-
-	menuitem = gtk.ImageMenuItem(node.getAttribute("name"))
-
-	tooltip = node.getAttribute("tooltip")
-	if tooltip:
-		menuitem.set_tooltip_text(tooltip)
-
-	icon_name = node.getAttribute("icon")
-	icon = getIconPath(icon_name)
-	if icon:
-		image = gtk.Image()
-		image.set_from_file(icon)
-		menuitem.set_image(image)
-
-	command = node.getAttribute("command")
-	if command:
-		menuitem.__command = command
-		menuitem.connect("activate", on_click)
-
-	terminal = node.getAttribute("terminal")
-	if terminal:
-		menuitem.__terminal = terminal
+def desktopEntry(entry):
+	if dir:
+		path = "/usr/share/desktop-directories/" + entry + ".directory"
 	else:
-		menuitem.__terminal = False
+		path = "/usr/share/app-install/desktop/" + entry + ".desktop"
+	return d.DesktopEntry(path)
 
-	return menuitem
+def menuitem(de):
+	name = de.getName()
+	icon = de.getIcon()
+	tooltip = de.getComment()
+	command = de.getExec()
+	terminal = de.getTerminal()
+	return create_menuitem_factory(name, icon, tooltip, command, terminal)
+
 
 def create_menu_directory(node):
 	ref = node.getAttribute("ref")
 	if ref:
 		return create_menu_directory_by_ref(ref)
 	return create_menuitem(node)
+
+
+def create_menuitem(node):
+	ref = node.getAttribute("ref")
+	if ref:
+		return create_menuitem_by_ref(ref)
+
+	name = node.getAttribute("name")
+	icon = node.getAttribute("icon")
+	tooltip = node.getAttribute("tooltip")
+	command = node.getAttribute("command")
+	terminal = node.getAttribute("terminal")
+
+	print "---------------", node.getAttribute("snot"), "----------------------"
+
+	return create_menuitem_factory(name, icon, tooltip, command, terminal)
+
+
+def create_menuitem_factory(name, icon, tooltip, command, terminal):
+# a name or icon must be present
+#	if name == "" and icon == "":
+#		raise "no name or icon"
+# name
+	menuitem = gtk.ImageMenuItem(name)
+# icon
+	if icon:
+		image = gtk.Image()
+		image.set_from_file(getIconPath(icon))
+		menuitem.set_image(image)
+# tooltip
+	if tooltip:
+		menuitem.set_tooltip_text(tooltip)
+# command
+	if command:
+		menuitem.__command = command
+		menuitem.connect("activate", on_click)
+# terminal
+	menuitem.__terminal = terminal if terminal else False
+#drag
+#	menuitem.connect("drag_begin", drag)
+#	TARGET_TYPE_TEXT = 80
+#	TARGET_TYPE_PIXMAP = 81
+#	fromImage = [("text/plain", 0, TARGET_TYPE_TEXT),
+#			("image/x-xpixmap", 0, TARGET_TYPE_PIXMAP)]
+#	menuitem.drag_source_set(gtk.gdk.BUTTON1_MASK, fromImage, gtk.gdk.ACTION_COPY)
+
+	return menuitem
+
+
+def drag(drag_context, data):
+	print drag_context, data
+
 
 def create_menu(node):
 	menus = []
