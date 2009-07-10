@@ -95,8 +95,6 @@ def create_menuitem(node):
 	command = node.getAttribute("command")
 	terminal = node.getAttribute("terminal")
 
-	print "---------------", node.getAttribute("snot"), "----------------------"
-
 	return create_menuitem_factory(name, icon, tooltip, command, terminal)
 
 
@@ -180,7 +178,7 @@ def create_rightclick_menu(applet):
 	applet.setup_menu(propxml, verbs, None)
 
 def ShowChangeDataSourceDialog(*arguments, **keywords):
-#	global data_source
+	global data_source
 	dialog = gtk.FileChooserDialog(title=None, action=gtk.FILE_CHOOSER_ACTION_OPEN, buttons=(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL ,gtk.STOCK_OPEN ,gtk.RESPONSE_OK))
 	response = dialog.run()
 	if response == gtk.RESPONSE_OK:
